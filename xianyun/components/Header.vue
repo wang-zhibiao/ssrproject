@@ -2,8 +2,10 @@
   <div class="header">
     <el-row type="flex" class="main" justify="space-between">
       <nuxt-link to="/">
+      <!-- logo背景图 -->
         <h1>闲云旅游</h1>
       </nuxt-link>
+      <!-- 导航栏 -->
       <el-row type="flex" class="nav">
         <nuxt-link to="/">首页</nuxt-link>
         <nuxt-link to="/post">旅游攻略</nuxt-link>
@@ -11,11 +13,13 @@
         <nuxt-link to="/air">国内机票</nuxt-link>
       </el-row>
       <el-row>
-        <el-dropdown v-if="true">
+        <!-- 登录成功时  $store.state.user是state的分类-->
+        <el-dropdown v-if="$store.state.user.userInfo.token">
           <el-row type="flex" align="middle" class="el-dropdown-link">
             <nuxt-link to="#">
-                <img src="../static/pic_sea.jpeg" alt="">
-              用户名
+              <!-- 图片动态绑定 -->
+                <img :src="$axios.defaults.baseURL + $store.state.user.userInfo.user.defaultAvatar" alt="">
+              {{$store.state.user.userInfo.user.nickname}}
             </nuxt-link>
             <i class="el-icon-caret-bottom el-icon--right"></i>
           </el-row>
@@ -24,22 +28,42 @@
               <nuxt-link to="#">个人中心</nuxt-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <div>退出</div>
+              <!-- 退出 -->
+              <div @click="handlelogout">退出</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+        <!-- 还未登录时 -->
         <nuxt-link to="/user/login"  class="account-link" v-else>登录 / 注册</nuxt-link>
       </el-row>
     </el-row>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data(){
+    return{
+
+    }
+  },
+  methods: {
+    // 退出成功时清除本地
+    handlelogout(){
+      this.$store.commit('user/clearuserInfo')
+       this.$message({
+                message: "退出成功",
+                type: "success"
+            })
+    }
+  }
+};
 </script>
 <style lang="less" scoped>
+// 用背景图当标签
 h1 {
   width: 150px;
   height: 50px;
+  cursor:pointer;
   font-size: 0;
   margin-top: 9px;
   background: url(../static/logo.jpg) no-repeat;
@@ -66,6 +90,7 @@ h1 {
       color: #409eff;
     }
   }
+  // 绑定组件的class需要加上/deep/
   /deep/.nuxt-link-exact-active {
     background: #409eff;
     color: #fff;
@@ -91,6 +116,7 @@ h1 {
 
                 width:32px;
                 height:32px;
+                //图片与文字居中
                 vertical-align: middle;
                 border:2px #fff solid;
                 border-radius:50px;
@@ -104,6 +130,7 @@ h1 {
 
             &:hover{
                 color:#409eff;
+                // 文字下划线
                 text-decoration: underline;
             }
         }

@@ -16,6 +16,7 @@
                 <el-row 
                 type="flex" 
                 class="search-tab">
+                    <!-- 用index与数据比较会返回boorean可以让谁显示active -->
                     <span 
                     v-for="(item, index) in options" 
                     :key="index"
@@ -48,9 +49,9 @@ export default {
   data() {
     return {
       banners: [
-        {
-          url: "http://157.122.54.189:9095/assets/images/th03.jfif"
-        }
+        // {
+        //   url: "http://157.122.54.189:9095/assets/images/th03.jfif"
+        // }
       ],
       options: [      // 搜索框tab选项
                 {
@@ -73,15 +74,16 @@ export default {
     }
   },
   mounted () {
+    // 请求图片
     this.$axios({
       url:'/scenics/banners'
     })
     .then(res=>{
-      console.log(res);
       this.banners = res.data.data
     })
   },
   methods: {
+    // 改变当前页
     currrnt(index){
       this.currentOption = index
     }
@@ -91,33 +93,36 @@ export default {
 
 <style lang="less">
 .container{
+  // 版心
     min-width:1000px;
     margin:0 auto;
+    // 最大的给相对定位
     position:relative;
-
     /deep/ .el-carousel__container{
         height:700px;
     }
-
+    // 背景图
     .banner-img{
         width:100%;
         height:100%;
     }
-
+    // 搜索框
     .banner-content{
+      //提高层级
         z-index:9;
         width:1000px;
+        // 相对定位-相对于container
         position:absolute;
         left:50%;
         top:45%;
         margin-left: -500px;
         border-top:1px transparent solid;
-
+        // 搜索导航
         .search-bar{
             width:552px;
             margin:0 auto;
         }
-
+        // 搜索导航按钮
         .search-tab{
             .active{
                 i{
@@ -127,10 +132,11 @@ export default {
                 background: #eee;
                 }
             }
-
+            // 单个按钮
             span{
                 width:82px;
                 height:36px;
+                //转化为块级
                 display:block;
                 position: relative;
                 margin-right:8px;
@@ -165,7 +171,7 @@ export default {
                 }
             }
         }
-
+        // 搜索框
         .search-input{
             width:550px;
             height:46px;
@@ -174,7 +180,7 @@ export default {
             border: 1px rgba(255,255,255,.2) solid;
             border-top:none;
             box-sizing: unset;
-
+            // 搜索表单input
             input{
                 flex:1;
                 height:20px;
@@ -183,7 +189,7 @@ export default {
                 border:0;
                 font-size:16px;
             }
-
+            // 搜索图标
             .el-icon-search{
                 cursor :pointer;
                 font-size:22px;
