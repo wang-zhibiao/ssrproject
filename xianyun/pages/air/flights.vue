@@ -48,7 +48,6 @@ export default {
   data() {
     return {
       ListData: [],
-      NewData:[],
       flightsData:{
           pageIndex:1,
           pageSize:5,
@@ -63,9 +62,13 @@ export default {
   mounted() {
     this.getListData();
   },
-//   computed: {
-      
-//   },
+  //监听式写法
+  computed: {
+      NewData(){
+             const {pageIndex,pageSize} = this.flightsData
+            return this.ListData.slice((pageIndex-1)*pageSize,pageIndex*pageSize)
+      }
+  },
   methods: {
       //请求列表数据
     getListData() {
@@ -76,27 +79,27 @@ export default {
         // console.log(res);
         this.flightsData.total = res.data.total;
         this.ListData = res.data.flights;
-         this.getNewListData()
+         // this.getNewListData()
       });
     },
     //页面数量
     handleSizeChange(value){
         this.flightsData.pageSize = value;
         // console.log(this.flightsData.pageSize);
-       this.getNewListData()
+        //  this.getNewListData()
     },
     //当前页
     handleCurrentChange(value){
         // console.log(value);
          this.flightsData.pageIndex = value;
-        this.getNewListData()
+        // this.getNewListData()
     },
     //获取切割后的数据
-    getNewListData(){
-        const {pageIndex,pageSize} = this.flightsData
-         this.NewData = this.ListData.slice((pageIndex-1)*pageSize,pageIndex*pageSize)
-         console.log(this.newData);
-    }
+    // getNewListData(){
+    //     const {pageIndex,pageSize} = this.flightsData
+    //      this.NewData = this.ListData.slice((pageIndex-1)*pageSize,pageIndex*pageSize)
+    //      console.log(this.newData);
+    // }
   }
 };
 </script>
