@@ -94,14 +94,14 @@ export default {
   methods: {
     // 发送验证码
     handleSendCaptcha() {
-      if (!this.form.username) {
+      if (!this.form.username.trim()) {
         this.$confirm("请输入手机号码", "提示", {
           confirmButtonText: "确定",
           showCancelButton: false,
           type: "warning"
         });
         return;
-      } else if (this.form.username.length !== 11) {
+      } else if (this.form.username.trim().length !== 11) {
         this.$confirm("请输入正确的(11位)手机号码", "提示", {
           confirmButtonText: "确定",
           showCancelButton: false,
@@ -139,7 +139,11 @@ export default {
                 type:'success',
                 message:'注册成功'
             })
+            this.$store.commit('user/serUserInfo',res.data)
+            // this.$router.replace("/");
+            setTimeout(()=>{
             this.$router.replace("/");
+            },1500)
           });
         }
       });

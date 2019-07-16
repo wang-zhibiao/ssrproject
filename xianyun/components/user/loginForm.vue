@@ -38,7 +38,6 @@ export default {
   methods: {
     // 提交登录
     handleLoginSubmit() {
-      console.log(this.form);
       this.$refs.form.validate(valid => {
         if (valid) {
           //普通请求

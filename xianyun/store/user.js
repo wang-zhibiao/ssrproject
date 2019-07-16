@@ -20,15 +20,13 @@ export const mutations = {
 export const actions = {
     // 登录请求  {commit} 是从store解构的
     login({commit},data){
-        this.$axios({
+        return this.$axios({
             url:'/accounts/login',
             method:"post",
             data
         })
         .then(res=>{
-            console.log(res);
              commit('serUserInfo',res.data)
-             return res.data
         })
     }
 }
