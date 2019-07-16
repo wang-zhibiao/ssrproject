@@ -86,27 +86,42 @@ export default {
         
         // 出发城市输入框获得焦点时触发
         // value 是选中的值，cb是回调函数，接收要展示的列表
-        queryDepartSearch(value, cb){
-           this.findCity(value, cb)
+       async queryDepartSearch(value, cb){
+         const res = await this.findCity(value)
+         if(res.length>0){
+           this.form.departCity = res[0].value;
+           this.form.departCode = res[0].sort;
+         }
+         cb(res)
         },
-        findCity(value, cb){
-          if(!value) return;
+        findCity(queryString){
+          return new Promise((revoled,reject)=>{
+            if(queryString.trim().length == 0){
+              revoled([])
+              return
+            }
             this.$axios({
                url:'/airs/city',
-               params:{name:value}
+               params:{name:queryString}
            }).then(res=>{
                const {data} = res.data
                const newData = data.map(v=>{
                    v.value = v.name.replace("市",""); 
                    return v
                })
-               cb(newData)
+               revoled(newData)
            })
+          })
         },
         // 目标城市输入框获得焦点时触发
         // value 是选中的值，cb是回调函数，接收要展示的列表
-        queryDestSearch(value, cb){
-           this.findCity(value,cb)
+       async queryDestSearch(value, cb){
+          const res = await this.findCity(value)
+         if(res.length>0){
+           this.form.destCity = res[0].value;
+           this.form.destCode = res[0].sort;
+         }
+         cb(res)
         },
        
         // 出发城市下拉选择时触发
@@ -114,7 +129,6 @@ export default {
             console.log(item);
             this.form.departCity = item.value;
             this.form.departCode = item.sort;
-            
         },
 
         // 目标城市下拉选择时触发
